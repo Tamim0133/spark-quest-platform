@@ -1,14 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Clock, Heart, Share2, User, Check } from "lucide-react";
+import ProjectHero from "@/components/ProjectHero";
+import FundingStats from "@/components/FundingStats";
+import ShareButtons from "@/components/ShareButtons";
+import RewardTierCard from "@/components/RewardTierCard";
+import CreatorCard from "@/components/CreatorCard";
+import RelatedProjects from "@/components/RelatedProjects";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import projectTech from "@/assets/project-tech.jpg";
+import projectArt from "@/assets/project-art.jpg";
+import projectGame from "@/assets/project-game.jpg";
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -18,14 +24,18 @@ const ProjectDetail = () => {
   const project = {
     id: id || "1",
     title: "Revolutionary Smart Watch with Health Monitoring",
+    tagline: "Track your health in real-time with AI-powered analytics",
     creator: "TechInnovate",
     creatorAvatar: "T",
-    image: projectTech,
+    creatorBio: "Hardware innovators creating the future of health technology. Based in San Francisco with a team of 15 engineers and designers.",
+    creatorLocation: "San Francisco, CA",
+    images: [projectTech, projectArt, projectGame],
     fundingGoal: 50000,
     fundingCurrent: 42350,
     backers: 847,
     daysLeft: 12,
     category: "Technology",
+    status: "trending" as const,
     description: `We're creating the next generation of smartwatches with advanced health monitoring capabilities. Our device combines cutting-edge technology with elegant design to help you track your health metrics in real-time.
 
 Key Features:
@@ -46,6 +56,18 @@ Your support will help us:
 • Produce the first batch of 5,000 units
 • Establish quality control systems
 • Build a customer support team`,
+    risks: `While we've completed extensive prototyping and testing, manufacturing at scale always carries risks:
+
+Manufacturing Challenges:
+• Component sourcing delays could affect delivery timeline
+• Quality control requires rigorous testing of each unit
+• We're working with established manufacturers to minimize risks
+
+Mitigation Strategy:
+• 6-month buffer built into timeline
+• Multiple supplier agreements in place
+• Daily quality control testing
+• Regular updates to keep backers informed`,
     rewards: [
       {
         amount: 50,
@@ -82,7 +104,41 @@ Your support will help us:
     ],
   };
 
-  const fundingPercentage = Math.min((project.fundingCurrent / project.fundingGoal) * 100, 100);
+  const relatedProjects = [
+    {
+      id: "2",
+      title: "Eco-Friendly Water Bottle",
+      creator: "GreenTech",
+      image: projectArt,
+      fundingGoal: 20000,
+      fundingCurrent: 18500,
+      backers: 423,
+      daysLeft: 8,
+      category: "Design",
+    },
+    {
+      id: "3",
+      title: "Indie Game: Crystal Quest",
+      creator: "PixelForge",
+      image: projectGame,
+      fundingGoal: 75000,
+      fundingCurrent: 45000,
+      backers: 1205,
+      daysLeft: 20,
+      category: "Games",
+    },
+    {
+      id: "4",
+      title: "Smart Home Hub",
+      creator: "HomeAI",
+      image: projectTech,
+      fundingGoal: 100000,
+      fundingCurrent: 82000,
+      backers: 967,
+      daysLeft: 15,
+      category: "Technology",
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -92,16 +148,21 @@ Your support will help us:
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Image Gallery */}
-            <div className="rounded-xl overflow-hidden shadow-lg animate-fade-in">
-              <img src={project.image} alt={project.title} className="w-full h-auto" />
-            </div>
+            {/* Hero Section */}
+            <ProjectHero
+              title={project.title}
+              creator={project.creator}
+              tagline={project.tagline}
+              images={project.images}
+              status={project.status}
+            />
 
             {/* Tabs */}
             <Tabs defaultValue="description" className="w-full">
               <TabsList className="w-full justify-start">
                 <TabsTrigger value="description">Description</TabsTrigger>
                 <TabsTrigger value="story">Story</TabsTrigger>
+                <TabsTrigger value="risks">Risks & Challenges</TabsTrigger>
                 <TabsTrigger value="faq">FAQ</TabsTrigger>
                 <TabsTrigger value="updates">Updates</TabsTrigger>
               </TabsList>
@@ -116,6 +177,13 @@ Your support will help us:
                 <div className="prose prose-slate max-w-none">
                   <p className="whitespace-pre-line text-muted-foreground leading-relaxed">
                     {project.story}
+                  </p>
+                </div>
+              </TabsContent>
+              <TabsContent value="risks" className="mt-6">
+                <div className="prose prose-slate max-w-none">
+                  <p className="whitespace-pre-line text-muted-foreground leading-relaxed">
+                    {project.risks}
                   </p>
                 </div>
               </TabsContent>
@@ -163,112 +231,55 @@ Your support will help us:
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Funding Stats */}
-            <Card className="sticky top-24 animate-scale-in">
-              <CardContent className="pt-6 space-y-6">
-                <div>
-                  <div className="text-3xl font-bold text-primary mb-1">
-                    ${project.fundingCurrent.toLocaleString()}
-                  </div>
-                  <div className="text-sm text-muted-foreground mb-4">
-                    pledged of ${project.fundingGoal.toLocaleString()} goal
-                  </div>
-                  <Progress value={fundingPercentage} className="h-2 mb-2" />
-                  <div className="text-sm text-muted-foreground">{Math.round(fundingPercentage)}% funded</div>
-                </div>
+            <FundingStats
+              fundingCurrent={project.fundingCurrent}
+              fundingGoal={project.fundingGoal}
+              backers={project.backers}
+              daysLeft={project.daysLeft}
+            />
 
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold">{project.backers}</span>
-                    <span className="text-sm text-muted-foreground">backers</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-2xl font-bold">{project.daysLeft}</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">days to go</span>
-                  </div>
-                </div>
+            <div className="space-y-3 animate-fade-in">
+              <Input
+                type="number"
+                placeholder="Enter pledge amount"
+                value={pledgeAmount}
+                onChange={(e) => setPledgeAmount(e.target.value)}
+                className="text-lg"
+              />
+              <Button className="w-full bg-accent hover:bg-accent-hover" size="lg">
+                Back this project
+              </Button>
+            </div>
 
-                <div className="space-y-3">
-                  <Input
-                    type="number"
-                    placeholder="Enter pledge amount"
-                    value={pledgeAmount}
-                    onChange={(e) => setPledgeAmount(e.target.value)}
-                    className="text-lg"
-                  />
-                  <Button className="w-full bg-accent hover:bg-accent-hover" size="lg">
-                    Back this project
-                  </Button>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button variant="outline" size="icon" className="flex-1">
-                    <Heart className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="flex-1">
-                    <Share2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <ShareButtons projectTitle={project.title} />
 
             {/* Creator Info */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
-                    {project.creatorAvatar}
-                  </div>
-                  <div>
-                    <div className="font-semibold">{project.creator}</div>
-                    <div className="text-sm text-muted-foreground">12 projects created</div>
-                  </div>
-                </div>
-                <Button variant="outline" className="w-full">
-                  <User className="h-4 w-4 mr-2" />
-                  View Profile
-                </Button>
-              </CardContent>
-            </Card>
+            <CreatorCard
+              name={project.creator}
+              avatar={project.creatorAvatar}
+              bio={project.creatorBio}
+              location={project.creatorLocation}
+              projectsCreated={12}
+              onViewProfile={() => console.log("View profile")}
+            />
 
             {/* Rewards */}
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fade-in">
               <h3 className="font-bold text-xl">Rewards</h3>
               {project.rewards.map((reward, index) => (
-                <Card key={index} className="border-2 hover:border-primary transition-smooth">
-                  <CardContent className="pt-6 space-y-3">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold">${reward.amount}</span>
-                      {reward.available === 0 && (
-                        <span className="text-xs text-destructive font-semibold">SOLD OUT</span>
-                      )}
-                    </div>
-                    <h4 className="font-semibold">{reward.title}</h4>
-                    <p className="text-sm text-muted-foreground">{reward.description}</p>
-                    <div className="pt-2 space-y-1 text-sm">
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        Estimated delivery: {reward.delivery}
-                      </div>
-                      <div className="text-muted-foreground">
-                        {reward.backers} backers
-                        {reward.available > 0 && ` • ${reward.available} left`}
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      disabled={reward.available === 0}
-                    >
-                      {reward.available === 0 ? "Sold Out" : "Select Reward"}
-                    </Button>
-                  </CardContent>
-                </Card>
+                <RewardTierCard
+                  key={index}
+                  {...reward}
+                  onSelect={() => setPledgeAmount(reward.amount.toString())}
+                />
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Related Projects */}
+        <div className="mt-16">
+          <RelatedProjects projects={relatedProjects} />
         </div>
       </div>
 
