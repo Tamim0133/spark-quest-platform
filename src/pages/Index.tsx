@@ -104,12 +104,17 @@ const Index = () => {
         <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-slide-in">
-              <TypewriterText 
-                text="Bring Creative Projects to"
-                highlightText="Life"
-                speed={80}
-                className="text-4xl md:text-6xl font-bold leading-tight"
-              />
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+                Bring Creative{" "}
+                <TypewriterText 
+                  text="Projects to"
+                  highlightText="Life"
+                  speed={100}
+                  infinite={true}
+                  pauseDuration={2000}
+                  className="inline"
+                />
+              </h1>
               <p className="text-lg text-muted-foreground">
                 Discover and support groundbreaking ideas. Start your own campaign and turn your
                 vision into reality with community backing.
