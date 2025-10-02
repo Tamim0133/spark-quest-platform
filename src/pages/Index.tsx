@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
+import ParticleBackground from "@/components/ParticleBackground";
 import { Search, Sparkles, Users, Target, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBanner from "@/assets/hero-banner.jpg";
@@ -98,7 +99,8 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-light to-background">
-        <div className="container mx-auto px-4 py-20 md:py-32">
+        <ParticleBackground />
+        <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-slide-in">
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
