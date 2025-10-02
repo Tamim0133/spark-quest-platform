@@ -5,6 +5,11 @@ import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import ParticleBackground from "@/components/ParticleBackground";
 import TypewriterText from "@/components/TypewriterText";
+import Testimonials from "@/components/Testimonials";
+import FAQ from "@/components/FAQ";
+import Newsletter from "@/components/Newsletter";
+import StatsCounter from "@/components/StatsCounter";
+import SuccessStories from "@/components/SuccessStories";
 import { Search, Sparkles, Users, Target, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBanner from "@/assets/hero-banner.jpg";
@@ -212,6 +217,21 @@ const Index = () => {
           ))}
         </div>
       </section>
+
+      {/* Stats Counter */}
+      <StatsCounter />
+
+      {/* Success Stories */}
+      <SuccessStories />
+
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* FAQ */}
+      <FAQ />
+
+      {/* Newsletter */}
+      <Newsletter />
 
       {/* CTA Section */}
       <section className="gradient-hero text-primary-foreground py-20">
