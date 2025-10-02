@@ -2,10 +2,9 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
+import Autoplay from "embla-carousel-autoplay";
 
 interface ProjectHeroProps {
   title: string;
@@ -37,7 +36,17 @@ const ProjectHero = ({ title, creator, tagline, images, status }: ProjectHeroPro
         </div>
       </div>
 
-      <Carousel className="w-full">
+      <Carousel 
+        className="w-full"
+        opts={{
+          loop: true,
+        }}
+        plugins={[
+          Autoplay({
+            delay: 4000,
+          }),
+        ]}
+      >
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
@@ -51,8 +60,6 @@ const ProjectHero = ({ title, creator, tagline, images, status }: ProjectHeroPro
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-4" />
-        <CarouselNext className="right-4" />
       </Carousel>
     </div>
   );
