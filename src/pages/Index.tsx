@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/ProjectCard";
 import ParticleBackground from "@/components/ParticleBackground";
+import TypewriterText from "@/components/TypewriterText";
 import { Search, Sparkles, Users, Target, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroBanner from "@/assets/hero-banner.jpg";
@@ -103,12 +104,12 @@ const Index = () => {
         <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 animate-slide-in">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Bring Creative Projects to{" "}
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  Life
-                </span>
-              </h1>
+              <TypewriterText 
+                text="Bring Creative Projects to"
+                highlightText="Life"
+                speed={80}
+                className="text-4xl md:text-6xl font-bold leading-tight"
+              />
               <p className="text-lg text-muted-foreground">
                 Discover and support groundbreaking ideas. Start your own campaign and turn your
                 vision into reality with community backing.
