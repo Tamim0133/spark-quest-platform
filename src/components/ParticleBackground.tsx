@@ -58,12 +58,12 @@ class Particle {
     if (this.y > canvas.height) this.y = 0;
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D, primaryHSL: string, accentHSL: string) {
     // Create gradient for each particle
     const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
-    gradient.addColorStop(0, `hsla(var(--primary), ${this.opacity * 0.8})`);
-    gradient.addColorStop(0.5, `hsla(var(--accent), ${this.opacity * 0.4})`);
-    gradient.addColorStop(1, `hsla(var(--primary), 0)`);
+    gradient.addColorStop(0, `hsla(${primaryHSL}, ${this.opacity * 0.8})`);
+    gradient.addColorStop(0.5, `hsla(${accentHSL}, ${this.opacity * 0.4})`);
+    gradient.addColorStop(1, `hsla(${primaryHSL}, 0)`);
     
     ctx.fillStyle = gradient;
     ctx.beginPath();
@@ -85,6 +85,14 @@ const ParticleBackground = () => {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // Get computed CSS variables
+    const getHSLColor = (varName: string) => {
+      const hsl = getComputedStyle(document.documentElement)
+        .getPropertyValue(varName)
+        .trim();
+      return hsl;
+    };
 
     // Set canvas size
     const resizeCanvas = () => {
@@ -117,6 +125,10 @@ const ParticleBackground = () => {
 
     let time = 0;
 
+    // Get color values once
+    const primaryHSL = getHSLColor('--primary');
+    const accentHSL = getHSLColor('--accent');
+
     // Animation loop
     const animate = () => {
       // Create subtle gradient background fade
@@ -138,7 +150,7 @@ const ParticleBackground = () => {
       // Update and draw particles
       for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update(flowField, canvas);
-        particles[i].draw(ctx);
+        particles[i].draw(ctx, primaryHSL, accentHSL);
 
         // Remove dead particles and add new ones
         if (particles[i].isDead()) {
@@ -161,9 +173,9 @@ const ParticleBackground = () => {
               particles[j].x, particles[j].y
             );
             const alpha = (1 - distance / 120) * 0.4;
-            gradient.addColorStop(0, `hsla(var(--primary), ${alpha})`);
-            gradient.addColorStop(0.5, `hsla(var(--accent), ${alpha * 1.2})`);
-            gradient.addColorStop(1, `hsla(var(--primary), ${alpha})`);
+            gradient.addColorStop(0, `hsla(${primaryHSL}, ${alpha})`);
+            gradient.addColorStop(0.5, `hsla(${accentHSL}, ${alpha * 1.2})`);
+            gradient.addColorStop(1, `hsla(${primaryHSL}, ${alpha})`);
             
             ctx.strokeStyle = gradient;
             ctx.beginPath();
