@@ -59,9 +59,15 @@ class Particle {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = `hsla(var(--primary), ${this.opacity * 0.6})`;
+    // Create gradient for each particle
+    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
+    gradient.addColorStop(0, `hsla(var(--primary), ${this.opacity * 0.8})`);
+    gradient.addColorStop(0.5, `hsla(var(--accent), ${this.opacity * 0.4})`);
+    gradient.addColorStop(1, `hsla(var(--primary), 0)`);
+    
+    ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
     ctx.fill();
   }
 
@@ -102,7 +108,7 @@ const ParticleBackground = () => {
 
     // Particles
     const particles: Particle[] = [];
-    const maxParticles = 100;
+    const maxParticles = 150;
 
     // Initialize particles
     for (let i = 0; i < maxParticles; i++) {
@@ -113,7 +119,11 @@ const ParticleBackground = () => {
 
     // Animation loop
     const animate = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      // Create subtle gradient background fade
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0.08)');
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.05)');
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update flow field
@@ -137,22 +147,29 @@ const ParticleBackground = () => {
         }
       }
 
-      // Draw connections
-      ctx.strokeStyle = `hsla(var(--primary), 0.15)`;
-      ctx.lineWidth = 0.5;
+      // Draw connections with gradient
+      ctx.lineWidth = 1;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 100) {
+          if (distance < 120) {
+            const gradient = ctx.createLinearGradient(
+              particles[i].x, particles[i].y,
+              particles[j].x, particles[j].y
+            );
+            const alpha = (1 - distance / 120) * 0.4;
+            gradient.addColorStop(0, `hsla(var(--primary), ${alpha})`);
+            gradient.addColorStop(0.5, `hsla(var(--accent), ${alpha * 1.2})`);
+            gradient.addColorStop(1, `hsla(var(--primary), ${alpha})`);
+            
+            ctx.strokeStyle = gradient;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.globalAlpha = (1 - distance / 100) * 0.5;
             ctx.stroke();
-            ctx.globalAlpha = 1;
           }
         }
       }
