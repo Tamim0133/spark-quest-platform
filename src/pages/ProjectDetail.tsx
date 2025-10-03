@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
@@ -15,10 +16,12 @@ import { useParams } from "react-router-dom";
 import projectTech from "@/assets/project-tech.jpg";
 import projectArt from "@/assets/project-art.jpg";
 import projectGame from "@/assets/project-game.jpg";
+import { Heart } from "lucide-react";
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const [pledgeAmount, setPledgeAmount] = useState("");
+  const [customPledgeAmount, setCustomPledgeAmount] = useState("");
   const [isPledgeModalOpen, setIsPledgeModalOpen] = useState(false);
   const [selectedReward, setSelectedReward] = useState<{
     amount: number;
@@ -34,6 +37,15 @@ const ProjectDetail = () => {
 
   const handlePledgeClick = () => {
     setSelectedReward(null);
+    setIsPledgeModalOpen(true);
+  };
+
+  const handleCustomPledge = () => {
+    if (!customPledgeAmount || parseFloat(customPledgeAmount) < 1) {
+      return;
+    }
+    setSelectedReward(null);
+    setPledgeAmount(customPledgeAmount);
     setIsPledgeModalOpen(true);
   };
 
@@ -276,6 +288,38 @@ Mitigation Strategy:
               projectsCreated={12}
               onViewProfile={() => console.log("View profile")}
             />
+
+            {/* Pledge without rewards */}
+            <Card className="border-2 border-primary/20 animate-fade-in">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Heart className="h-5 w-5 text-primary" />
+                  Pledge without a reward
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Support this project with any amount you choose. You won't receive a reward, but you'll help bring this project to life.
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Enter amount"
+                    min="1"
+                    value={customPledgeAmount}
+                    onChange={(e) => setCustomPledgeAmount(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button 
+                    onClick={handleCustomPledge}
+                    disabled={!customPledgeAmount || parseFloat(customPledgeAmount) < 1}
+                    className="bg-primary hover:bg-primary-hover"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Rewards */}
             <div className="space-y-4 animate-fade-in">

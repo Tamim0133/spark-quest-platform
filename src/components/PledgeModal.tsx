@@ -135,8 +135,15 @@ const PledgeModal = ({
                       min="1"
                       {...field}
                       className="text-lg"
+                      readOnly={!!selectedReward}
+                      disabled={!!selectedReward}
                     />
                   </FormControl>
+                  {selectedReward && (
+                    <p className="text-sm text-muted-foreground">
+                      Amount is fixed for this reward tier
+                    </p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
