@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
@@ -10,6 +9,7 @@ import ShareButtons from "@/components/ShareButtons";
 import RewardTierCard from "@/components/RewardTierCard";
 import CreatorCard from "@/components/CreatorCard";
 import RelatedProjects from "@/components/RelatedProjects";
+import PledgeModal from "@/components/PledgeModal";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import projectTech from "@/assets/project-tech.jpg";
@@ -19,6 +19,23 @@ import projectGame from "@/assets/project-game.jpg";
 const ProjectDetail = () => {
   const { id } = useParams();
   const [pledgeAmount, setPledgeAmount] = useState("");
+  const [isPledgeModalOpen, setIsPledgeModalOpen] = useState(false);
+  const [selectedReward, setSelectedReward] = useState<{
+    amount: number;
+    title: string;
+    description: string;
+  } | null>(null);
+
+  const handleRewardSelect = (reward: { amount: number; title: string; description: string }) => {
+    setSelectedReward(reward);
+    setPledgeAmount(reward.amount.toString());
+    setIsPledgeModalOpen(true);
+  };
+
+  const handlePledgeClick = () => {
+    setSelectedReward(null);
+    setIsPledgeModalOpen(true);
+  };
 
   // Mock project data
   const project = {
@@ -238,15 +255,12 @@ Mitigation Strategy:
               daysLeft={project.daysLeft}
             />
 
-            <div className="space-y-3 animate-fade-in">
-              <Input
-                type="number"
-                placeholder="Enter pledge amount"
-                value={pledgeAmount}
-                onChange={(e) => setPledgeAmount(e.target.value)}
-                className="text-lg"
-              />
-              <Button className="w-full bg-accent hover:bg-accent-hover" size="lg">
+            <div className="animate-fade-in">
+              <Button 
+                className="w-full bg-accent hover:bg-accent-hover" 
+                size="lg"
+                onClick={handlePledgeClick}
+              >
                 Back this project
               </Button>
             </div>
@@ -270,7 +284,7 @@ Mitigation Strategy:
                 <RewardTierCard
                   key={index}
                   {...reward}
-                  onSelect={() => setPledgeAmount(reward.amount.toString())}
+                  onSelect={() => handleRewardSelect(reward)}
                 />
               ))}
             </div>
@@ -284,6 +298,15 @@ Mitigation Strategy:
       </div>
 
       <Footer />
+
+      {/* Pledge Modal */}
+      <PledgeModal
+        open={isPledgeModalOpen}
+        onOpenChange={setIsPledgeModalOpen}
+        projectTitle={project.title}
+        defaultAmount={pledgeAmount}
+        selectedReward={selectedReward}
+      />
     </div>
   );
 };
