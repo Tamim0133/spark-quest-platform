@@ -86,12 +86,13 @@ const ParticleBackground = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Get computed CSS variables
+    // Get computed CSS variables and convert to comma-separated format for canvas API
     const getHSLColor = (varName: string) => {
       const hsl = getComputedStyle(document.documentElement)
         .getPropertyValue(varName)
         .trim();
-      return hsl;
+      // Convert "174 62% 47%" to "174, 62%, 47%" for canvas API compatibility
+      return hsl.replace(/\s+/g, ', ');
     };
 
     // Set canvas size
