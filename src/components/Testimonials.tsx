@@ -7,7 +7,7 @@ const testimonials = [
     role: "Product Designer",
     image: "SJ",
     rating: 5,
-    text: "FundStarter helped me bring my design project to life. The community support was incredible!",
+    text: "DotFunding helped me bring my design project to life. The community support was incredible!",
   },
   {
     name: "Michael Chen",

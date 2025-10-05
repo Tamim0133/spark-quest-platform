@@ -10,10 +10,10 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2 text-xl font-bold">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground">F</span>
+                <span className="text-primary-foreground">D</span>
               </div>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                FundStarter
+                DotFunding
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -119,7 +119,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} FundStarter. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DotFunding. All rights reserved.</p>
         </div>
       </div>
     </footer>

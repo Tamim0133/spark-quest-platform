@@ -20,10 +20,10 @@ const SignUp = () => {
         <CardHeader className="space-y-1 text-center">
           <Link to="/" className="flex items-center justify-center gap-2 mb-4">
             <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground text-xl font-bold">F</span>
+              <span className="text-primary-foreground text-xl font-bold">D</span>
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              FundStarter
+              DotFunding
             </span>
           </Link>
           <CardTitle className="text-2xl">Create your account</CardTitle>

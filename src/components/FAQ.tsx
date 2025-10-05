@@ -7,11 +7,11 @@ import {
 
 const faqs = [
   {
-    question: "How does FundStarter work?",
+    question: "How does DotFunding work?",
     answer: "Creators launch projects, set funding goals, and offer rewards. Backers pledge money to help bring projects to life. If the goal is met, backers are charged and creators receive funding.",
   },
   {
-    question: "What fees does FundStarter charge?",
+    question: "What fees does DotFunding charge?",
     answer: "We charge a 5% platform fee on successfully funded projects, plus payment processing fees (typically 3-5%). There are no upfront costs to launch a project.",
   },
   {

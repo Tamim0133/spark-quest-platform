@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { Search, User, Menu } from "lucide-react";
+import { Search, User, Menu, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="sticky top-0 z-50 bg-card border-b border-border shadow-sm">
@@ -14,10 +16,10 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground text-xl">F</span>
+              <span className="text-primary-foreground text-xl">D</span>
             </div>
             <span className="hidden sm:inline bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              FundStarter
+              DotFunding
             </span>
           </Link>
 
@@ -41,11 +43,24 @@ const Navbar = () => {
             <Button variant="default" asChild className="bg-primary hover:bg-primary-hover">
               <Link to="/create-project">Start a Project</Link>
             </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link to="/login">
-                <User className="h-5 w-5" />
-              </Link>
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Button variant="ghost" size="icon" asChild>
+                  <Link to="/profile">
+                    <User className="h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="icon" onClick={logout}>
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
+            ) : (
+              <Button variant="ghost" size="icon" asChild>
+                <Link to="/login">
+                  <User className="h-5 w-5" />
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,9 +95,20 @@ const Navbar = () => {
             <Button variant="default" asChild className="justify-start bg-primary hover:bg-primary-hover">
               <Link to="/create-project">Start a Project</Link>
             </Button>
-            <Button variant="ghost" asChild className="justify-start">
-              <Link to="/login">Login / Sign Up</Link>
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <Button variant="ghost" asChild className="justify-start">
+                  <Link to="/profile">Profile</Link>
+                </Button>
+                <Button variant="ghost" onClick={logout} className="justify-start">
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button variant="ghost" asChild className="justify-start">
+                <Link to="/login">Login / Sign Up</Link>
+              </Button>
+            )}
           </div>
         )}
       </div>

@@ -8,13 +8,28 @@ import { User, Settings, Heart } from "lucide-react";
 import projectTech from "@/assets/project-tech.jpg";
 import projectArt from "@/assets/project-art.jpg";
 import projectGame from "@/assets/project-game.jpg";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Profile = () => {
-  // Mock user data
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "JD",
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated || !user) {
+    return null;
+  }
+
+  const profileData = {
+    name: user.name,
+    email: user.email,
+    avatar: user.name.split(' ').map(n => n[0]).join(''),
     joinedDate: "January 2024",
     projectsCreated: 2,
     projectsBacked: 12,
@@ -68,32 +83,32 @@ const Profile = () => {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
                 <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-3xl font-bold">
-                  {user.avatar}
+                  {profileData.avatar}
                 </div>
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold mb-2">{user.name}</h1>
-                  <p className="text-muted-foreground mb-4">{user.email}</p>
+                  <h1 className="text-3xl font-bold mb-2">{profileData.name}</h1>
+                  <p className="text-muted-foreground mb-4">{profileData.email}</p>
                   <div className="flex flex-wrap gap-6 text-sm">
                     <div>
                       <span className="font-semibold text-foreground">
-                        {user.projectsCreated}
+                        {profileData.projectsCreated}
                       </span>{" "}
                       <span className="text-muted-foreground">projects created</span>
                     </div>
                     <div>
                       <span className="font-semibold text-foreground">
-                        {user.projectsBacked}
+                        {profileData.projectsBacked}
                       </span>{" "}
                       <span className="text-muted-foreground">projects backed</span>
                     </div>
                     <div>
                       <span className="font-semibold text-foreground">
-                        ${user.totalBacked}
+                        ${profileData.totalBacked}
                       </span>{" "}
                       <span className="text-muted-foreground">total backed</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Member since {user.joinedDate}</span>
+                      <span className="text-muted-foreground">Member since {profileData.joinedDate}</span>
                     </div>
                   </div>
                 </div>
@@ -124,7 +139,7 @@ const Profile = () => {
               <div>
                 <h2 className="text-2xl font-bold mb-1">Projects I've Created</h2>
                 <p className="text-muted-foreground">
-                  Campaigns you've launched on FundStarter
+                  Campaigns you've launched on DotFunding
                 </p>
               </div>
               <Button className="bg-accent hover:bg-accent-hover">Create New Project</Button>
